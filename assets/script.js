@@ -110,7 +110,7 @@ function showToast(message, type = "success") {
   };
 
   toast.className = `pointer-events-auto flex items-center gap-2.5 px-4 py-3 rounded-xl border text-sm shadow-xl transition-all duration-300 transform translate-y-2 opacity-0 ${bgStyles[type] || bgStyles.info}`;
-  toast.innerHTML = `<i class="ti ${icons[type] || icons.info} text-lg shrink-0"></i><span>${escapeHTML(message)}</span>`;
+  toast.innerHTML = `<i class="ti ${icons[type] || icons.info} text-lg shrink-0" aria-hidden="true"></i><span>${escapeHTML(message)}</span>`;
 
   container.appendChild(toast);
 
@@ -218,7 +218,7 @@ function switchTab(tabName) {
         "tab-btn flex-1 flex items-center justify-center gap-2 px-3.5 py-3 rounded-xl text-sm font-semibold transition-all duration-200 bg-sky-600 text-white shadow-sm";
     } else {
       btn.className =
-        "tab-btn flex-1 flex items-center justify-center gap-2 px-3.5 py-3 rounded-xl text-sm font-semibold transition-all duration-200 text-slate-600 hover:text-slate-900 hover:bg-slate-100";
+        "tab-btn flex-1 flex items-center justify-center gap-2 px-3.5 py-3 rounded-xl text-sm font-semibold transition-all duration-200 text-slate-700 hover:text-slate-900 hover:bg-slate-100";
     }
   });
 
@@ -329,7 +329,6 @@ function loadExpenses() {
   try {
     const raw = localStorage.getItem(EXPENSE_STORAGE_KEY);
     if (!raw) {
-      // Simpan data awal jika baru pertama dibuka
       localStorage.setItem(EXPENSE_STORAGE_KEY, JSON.stringify(DEFAULT_EXPENSES));
       return [...DEFAULT_EXPENSES];
     }
@@ -374,10 +373,10 @@ function updateExpenseSummary() {
   if (statNetBalance) {
     statNetBalance.textContent = formatRupiah(balance);
     if (balance >= 0) {
-      statNetBalance.className = "font-display text-2xl font-extrabold text-sky-600";
+      statNetBalance.className = "font-display text-2xl font-extrabold text-sky-700";
       if (statBalanceDesc) statBalanceDesc.textContent = "Status keuangan aman (surplus)";
     } else {
-      statNetBalance.className = "font-display text-2xl font-extrabold text-rose-600";
+      statNetBalance.className = "font-display text-2xl font-extrabold text-rose-700";
       if (statBalanceDesc) statBalanceDesc.textContent = "Pengeluaran melebihi pemasukan (defisit)";
     }
   }
@@ -390,17 +389,17 @@ function updateExpenseSummary() {
  */
 function getCategoryMeta(category) {
   const metaMap = {
-    "Makanan & Minuman": { icon: "ti-soup", color: "bg-amber-100 text-amber-700" },
-    "Transportasi": { icon: "ti-bus", color: "bg-blue-100 text-blue-700" },
-    "Belanja": { icon: "ti-shopping-bag", color: "bg-purple-100 text-purple-700" },
-    "Tagihan": { icon: "ti-receipt", color: "bg-red-100 text-red-700" },
-    "Pendidikan": { icon: "ti-school", color: "bg-emerald-100 text-emerald-700" },
-    "Hiburan": { icon: "ti-device-gamepad", color: "bg-pink-100 text-pink-700" },
-    "Gaji & Honor": { icon: "ti-coin", color: "bg-teal-100 text-teal-700" },
-    "Investasi": { icon: "ti-chart-line", color: "bg-cyan-100 text-cyan-700" },
-    "Lainnya": { icon: "ti-category", color: "bg-slate-100 text-slate-700" },
+    "Makanan & Minuman": { icon: "ti-soup", color: "bg-amber-100 text-amber-800" },
+    "Transportasi": { icon: "ti-bus", color: "bg-blue-100 text-blue-800" },
+    "Belanja": { icon: "ti-shopping-bag", color: "bg-purple-100 text-purple-800" },
+    "Tagihan": { icon: "ti-receipt", color: "bg-rose-100 text-rose-800" },
+    "Pendidikan": { icon: "ti-school", color: "bg-emerald-100 text-emerald-800" },
+    "Hiburan": { icon: "ti-device-gamepad", color: "bg-pink-100 text-pink-800" },
+    "Gaji & Honor": { icon: "ti-coin", color: "bg-teal-100 text-teal-800" },
+    "Investasi": { icon: "ti-chart-line", color: "bg-cyan-100 text-cyan-800" },
+    "Lainnya": { icon: "ti-category", color: "bg-slate-100 text-slate-800" },
   };
-  return metaMap[category] || { icon: "ti-tag", color: "bg-slate-100 text-slate-700" };
+  return metaMap[category] || { icon: "ti-tag", color: "bg-slate-100 text-slate-800" };
 }
 
 /**
@@ -469,7 +468,7 @@ function renderExpenses() {
 
     const catIconWrapper = document.createElement("div");
     catIconWrapper.className = `w-10 h-10 rounded-xl flex items-center justify-center text-lg shrink-0 ${catMeta.color}`;
-    catIconWrapper.innerHTML = `<i class="ti ${catMeta.icon}"></i>`;
+    catIconWrapper.innerHTML = `<i class="ti ${catMeta.icon}" aria-hidden="true"></i>`;
 
     const textInfo = document.createElement("div");
     textInfo.className = "flex-1 min-w-0";
@@ -479,14 +478,14 @@ function renderExpenses() {
     titleEl.textContent = item.title;
 
     const metaRow = document.createElement("div");
-    metaRow.className = "flex flex-wrap items-center gap-2 mt-1 text-xs text-slate-500";
+    metaRow.className = "flex flex-wrap items-center gap-2 mt-1 text-xs text-slate-600";
 
     const dateSpan = document.createElement("span");
     dateSpan.className = "flex items-center gap-1";
-    dateSpan.innerHTML = `<i class="ti ti-calendar text-slate-400"></i> ${formatDate(item.date)}`;
+    dateSpan.innerHTML = `<i class="ti ti-calendar text-slate-500" aria-hidden="true"></i> ${formatDate(item.date)}`;
 
     const catBadge = document.createElement("span");
-    catBadge.className = "px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 font-medium";
+    catBadge.className = "px-2 py-0.5 rounded-md bg-slate-100 text-slate-800 font-medium";
     catBadge.textContent = item.category;
 
     const typeBadge = document.createElement("span");
@@ -505,7 +504,7 @@ function renderExpenses() {
 
     const amountEl = document.createElement("p");
     amountEl.className = `font-display text-base font-bold tracking-tight ${
-      isIncome ? "text-emerald-600" : "text-rose-600"
+      isIncome ? "text-emerald-700" : "text-rose-700"
     }`;
     amountEl.textContent = `${isIncome ? "+" : "-"}${formatRupiah(item.amount)}`;
 
@@ -517,7 +516,7 @@ function renderExpenses() {
     editBtn.type = "button";
     editBtn.className =
       "inline-flex items-center gap-1 rounded-lg border border-slate-200 px-2.5 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition";
-    editBtn.innerHTML = '<i class="ti ti-pencil"></i><span class="hidden md:inline">Ubah</span>';
+    editBtn.innerHTML = '<i class="ti ti-pencil" aria-hidden="true"></i><span class="hidden md:inline">Ubah</span>';
     editBtn.setAttribute("aria-label", `Ubah transaksi ${item.title}`);
     editBtn.addEventListener("click", () => openEditExpenseModal(item.id));
 
@@ -526,7 +525,7 @@ function renderExpenses() {
     deleteBtn.type = "button";
     deleteBtn.className =
       "inline-flex items-center gap-1 rounded-lg border border-rose-200 px-2.5 py-1.5 text-xs font-semibold text-rose-700 hover:bg-rose-50 transition";
-    deleteBtn.innerHTML = '<i class="ti ti-trash"></i><span class="hidden md:inline">Hapus</span>';
+    deleteBtn.innerHTML = '<i class="ti ti-trash" aria-hidden="true"></i><span class="hidden md:inline">Hapus</span>';
     deleteBtn.setAttribute("aria-label", `Hapus transaksi ${item.title}`);
     deleteBtn.addEventListener("click", () => openDeleteExpenseModal(item.id));
 
@@ -574,13 +573,11 @@ function openDeleteExpenseModal(id) {
 
 // Inisialisasi Event Handlers untuk Expense Tracker
 function initExpenseEvents() {
-  // Set default tanggal hari ini
   if (expenseDateInput) {
     const today = new Date().toISOString().split("T")[0];
     expenseDateInput.value = today;
   }
 
-  // Tambah Transaksi
   expenseForm?.addEventListener("submit", (e) => {
     e.preventDefault();
     const title = (expenseTitleInput?.value || "").trim();
@@ -616,7 +613,6 @@ function initExpenseEvents() {
     saveExpenses();
     renderExpenses();
 
-    // Reset Form
     expenseForm.reset();
     expenseTypeSelect.value = "Pengeluaran";
     expenseCategorySelect.value = "Makanan & Minuman";
@@ -626,7 +622,6 @@ function initExpenseEvents() {
     showToast("Transaksi berhasil ditambahkan!", "success");
   });
 
-  // Simpan Perubahan Edit Transaksi
   formEditExpense?.addEventListener("submit", (e) => {
     e.preventDefault();
     if (!editingExpenseId) return;
@@ -658,7 +653,6 @@ function initExpenseEvents() {
     editingExpenseId = null;
   });
 
-  // Konfirmasi Hapus Transaksi
   btnConfirmDeleteExpense?.addEventListener("click", () => {
     if (!deletingExpenseId) return;
     expenses = expenses.filter((x) => x.id !== deletingExpenseId);
@@ -669,7 +663,6 @@ function initExpenseEvents() {
     deletingExpenseId = null;
   });
 
-  // Pencarian, Filter & Sorting Listeners
   expenseSearchInput?.addEventListener("input", renderExpenses);
   expenseFilterType?.addEventListener("change", renderExpenses);
   expenseFilterCategory?.addEventListener("change", renderExpenses);
@@ -682,7 +675,6 @@ function initExpenseEvents() {
 
 const BOOKMARK_STORAGE_KEY = "ifs24034-p3-bookmarks";
 
-// Data awal (seed data) jika localStorage masih kosong
 const DEFAULT_BOOKMARKS = [
   {
     id: "bm-sample-1",
@@ -722,7 +714,6 @@ let bookmarks = loadBookmarks();
 let editingBookmarkId = null;
 let deletingBookmarkId = null;
 
-// Elemen DOM Bookmark
 const bookmarkForm = $("#bookmark-form");
 const bookmarkTitleInput = $("#bookmark-title");
 const bookmarkUrlInput = $("#bookmark-url");
@@ -738,7 +729,6 @@ const bookmarkListEl = $("#bookmark-list");
 const bookmarkEmptyEl = $("#bookmark-empty");
 const bookmarkCountBadge = $("#bookmark-count-badge");
 
-// Elemen Modal Edit Bookmark
 const modalEditBookmark = $("#modal-edit-bookmark");
 const formEditBookmark = $("#form-edit-bookmark");
 const editBookmarkTitle = $("#edit-bookmark-title");
@@ -747,16 +737,11 @@ const editBookmarkUrlError = $("#edit-bookmark-url-error");
 const editBookmarkCategory = $("#edit-bookmark-category");
 const editBookmarkNotes = $("#edit-bookmark-notes");
 
-// Elemen Modal Delete Bookmark
 const modalDeleteBookmark = $("#modal-delete-bookmark");
 const deleteBookmarkTitle = $("#delete-bookmark-title");
 const deleteBookmarkUrl = $("#delete-bookmark-url");
 const btnConfirmDeleteBookmark = $("#btn-confirm-delete-bookmark");
 
-/**
- * Muat data bookmark dari localStorage
- * @returns {Array}
- */
 function loadBookmarks() {
   try {
     const raw = localStorage.getItem(BOOKMARK_STORAGE_KEY);
@@ -771,9 +756,6 @@ function loadBookmarks() {
   }
 }
 
-/**
- * Simpan data bookmark ke localStorage
- */
 function saveBookmarks() {
   try {
     localStorage.setItem(BOOKMARK_STORAGE_KEY, JSON.stringify(bookmarks));
@@ -782,11 +764,6 @@ function saveBookmarks() {
   }
 }
 
-/**
- * Validasi URL sederhana (diawali http:// atau https:// dan format web valid)
- * @param {string} urlString 
- * @returns {boolean}
- */
 function isValidURL(urlString) {
   if (!urlString) return false;
   const trimmed = urlString.trim();
@@ -801,11 +778,6 @@ function isValidURL(urlString) {
   }
 }
 
-/**
- * Warna dan ikon kategori bookmark
- * @param {string} category 
- * @returns {{icon: string, color: string}}
- */
 function getBookmarkCategoryMeta(category) {
   const metaMap = {
     "Edukasi & Belajar": { icon: "ti-book", color: "bg-emerald-100 text-emerald-800" },
@@ -819,10 +791,6 @@ function getBookmarkCategoryMeta(category) {
   return metaMap[category] || { icon: "ti-link", color: "bg-slate-100 text-slate-800" };
 }
 
-/**
- * Salin teks URL ke papan klip (clipboard)
- * @param {string} text 
- */
 function copyToClipboard(text) {
   if (navigator.clipboard && window.isSecureContext) {
     navigator.clipboard.writeText(text).then(() => {
@@ -852,15 +820,11 @@ function fallbackCopyText(text) {
   document.body.removeChild(tempInput);
 }
 
-/**
- * Filter, sort, dan render daftar bookmark ke DOM
- */
 function renderBookmarks() {
   const query = (bookmarkSearchInput?.value || "").trim().toLowerCase();
   const filterCat = bookmarkFilterCategory?.value || "all";
   const sortBy = bookmarkSortSelect?.value || "newest";
 
-  // Filter
   let filtered = bookmarks.filter((item) => {
     const matchQuery =
       (item.title || "").toLowerCase().includes(query) ||
@@ -870,7 +834,6 @@ function renderBookmarks() {
     return matchQuery && matchCat;
   });
 
-  // Sort
   filtered.sort((a, b) => {
     switch (sortBy) {
       case "oldest":
@@ -906,42 +869,37 @@ function renderBookmarks() {
 
     const catMeta = getBookmarkCategoryMeta(item.category);
 
-    // Kiri: Icon, Judul (Link), URL, Catatan
     const leftDiv = document.createElement("div");
     leftDiv.className = "flex items-start gap-3 flex-1 min-w-0";
 
     const iconDiv = document.createElement("div");
     iconDiv.className = `w-10 h-10 rounded-xl flex items-center justify-center text-lg shrink-0 ${catMeta.color}`;
-    iconDiv.innerHTML = `<i class="ti ${catMeta.icon}"></i>`;
+    iconDiv.innerHTML = `<i class="ti ${catMeta.icon}" aria-hidden="true"></i>`;
 
     const infoDiv = document.createElement("div");
     infoDiv.className = "flex-1 min-w-0";
 
-    // Link Judul membuka tab baru
     const linkTitle = document.createElement("a");
     linkTitle.href = item.url;
     linkTitle.target = "_blank";
     linkTitle.rel = "noopener noreferrer";
     linkTitle.className =
-      "font-semibold text-slate-900 hover:text-indigo-600 transition inline-flex items-center gap-1.5 text-sm group/link";
-    linkTitle.innerHTML = `<span>${escapeHTML(item.title)}</span><i class="ti ti-external-link text-slate-400 group-hover/link:text-indigo-600 text-xs"></i>`;
+      "font-semibold text-slate-900 hover:text-indigo-700 transition inline-flex items-center gap-1.5 text-sm group/link";
+    linkTitle.innerHTML = `<span>${escapeHTML(item.title)}</span><i class="ti ti-external-link text-slate-500 group-hover/link:text-indigo-700 text-xs" aria-hidden="true"></i>`;
 
-    // URL teks
     const urlP = document.createElement("p");
-    urlP.className = "text-xs text-indigo-700 truncate font-mono mt-0.5";
+    urlP.className = "text-xs text-indigo-800 truncate font-mono mt-0.5 font-semibold";
     urlP.textContent = item.url;
 
-    // Catatan jika ada
     if (item.notes) {
       const notesP = document.createElement("p");
-      notesP.className = "text-xs text-slate-500 mt-1 line-clamp-2";
+      notesP.className = "text-xs text-slate-600 mt-1 line-clamp-2";
       notesP.textContent = item.notes;
       infoDiv.append(linkTitle, urlP, notesP);
     } else {
       infoDiv.append(linkTitle, urlP);
     }
 
-    // Badge kategori
     const badgeSpan = document.createElement("span");
     badgeSpan.className = `inline-block text-[11px] px-2 py-0.5 rounded-md font-semibold mt-1.5 ${catMeta.color}`;
     badgeSpan.textContent = item.category;
@@ -949,56 +907,50 @@ function renderBookmarks() {
 
     leftDiv.append(iconDiv, infoDiv);
 
-    // Kanan: Tombol Buka, Salin, Ubah, Hapus
     const rightDiv = document.createElement("div");
     rightDiv.className =
       "flex items-center justify-between sm:justify-end gap-1.5 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100";
 
-    // Buka Tautan
     const openBtn = document.createElement("a");
     openBtn.href = item.url;
     openBtn.target = "_blank";
     openBtn.rel = "noopener noreferrer";
+    openBtn.ariaLabel = `Buka tautan ${item.title}`;
     openBtn.className =
-      "inline-flex items-center gap-1 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 px-2.5 py-1.5 text-xs font-semibold transition";
-    openBtn.innerHTML = '<i class="ti ti-external-link"></i><span>Buka</span>';
+      "inline-flex items-center gap-1 rounded-lg bg-indigo-100 hover:bg-indigo-200 text-indigo-800 px-2.5 py-1.5 text-xs font-semibold transition";
+    openBtn.innerHTML = '<i class="ti ti-external-link" aria-hidden="true"></i><span>Buka</span>';
 
-    // Salin Tautan
     const copyBtn = document.createElement("button");
     copyBtn.type = "button";
     copyBtn.className =
-      "inline-flex items-center gap-1 rounded-lg border border-slate-200 px-2 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50 transition";
-    copyBtn.innerHTML = '<i class="ti ti-copy"></i><span class="hidden md:inline">Salin</span>';
+      "inline-flex items-center gap-1 rounded-lg border border-slate-200 px-2 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition";
+    copyBtn.innerHTML = '<i class="ti ti-copy" aria-hidden="true"></i><span class="hidden md:inline">Salin</span>';
     copyBtn.title = "Salin URL ke papan klip";
+    copyBtn.setAttribute("aria-label", `Salin tautan ${item.title}`);
     copyBtn.addEventListener("click", () => copyToClipboard(item.url));
 
-    // Tombol Ubah
     const editBtn = document.createElement("button");
     editBtn.type = "button";
     editBtn.className =
-      "inline-flex items-center gap-1 rounded-lg border border-slate-200 px-2 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50 transition";
-    editBtn.innerHTML = '<i class="ti ti-pencil"></i><span class="hidden md:inline">Ubah</span>';
+      "inline-flex items-center gap-1 rounded-lg border border-slate-200 px-2 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition";
+    editBtn.innerHTML = '<i class="ti ti-pencil" aria-hidden="true"></i><span class="hidden md:inline">Ubah</span>';
+    editBtn.setAttribute("aria-label", `Ubah bookmark ${item.title}`);
     editBtn.addEventListener("click", () => openEditBookmarkModal(item.id));
 
-    // Tombol Hapus
     const deleteBtn = document.createElement("button");
     deleteBtn.type = "button";
     deleteBtn.className =
-      "inline-flex items-center gap-1 rounded-lg border border-rose-200 px-2 py-1.5 text-xs font-medium text-rose-700 hover:bg-rose-50 transition";
-    deleteBtn.innerHTML = '<i class="ti ti-trash"></i><span class="hidden md:inline">Hapus</span>';
+      "inline-flex items-center gap-1 rounded-lg border border-rose-200 px-2 py-1.5 text-xs font-semibold text-rose-700 hover:bg-rose-50 transition";
+    deleteBtn.innerHTML = '<i class="ti ti-trash" aria-hidden="true"></i><span class="hidden md:inline">Hapus</span>';
+    deleteBtn.setAttribute("aria-label", `Hapus bookmark ${item.title}`);
     deleteBtn.addEventListener("click", () => openDeleteBookmarkModal(item.id));
 
     rightDiv.append(openBtn, copyBtn, editBtn, deleteBtn);
-
     li.append(leftDiv, rightDiv);
     bookmarkListEl.appendChild(li);
   });
 }
 
-/**
- * Buka modal ubah bookmark
- * @param {string} id 
- */
 function openEditBookmarkModal(id) {
   const item = bookmarks.find((x) => x.id === id);
   if (!item) return;
@@ -1014,10 +966,6 @@ function openEditBookmarkModal(id) {
   editBookmarkTitle.focus();
 }
 
-/**
- * Buka modal konfirmasi hapus bookmark
- * @param {string} id 
- */
 function openDeleteBookmarkModal(id) {
   const item = bookmarks.find((x) => x.id === id);
   if (!item) return;
@@ -1029,9 +977,7 @@ function openDeleteBookmarkModal(id) {
   openModal(modalDeleteBookmark);
 }
 
-// Inisialisasi Event Handlers untuk Bookmark
 function initBookmarkEvents() {
-  // Tambah Bookmark
   bookmarkForm?.addEventListener("submit", (e) => {
     e.preventDefault();
     const title = (bookmarkTitleInput?.value || "").trim();
@@ -1072,7 +1018,6 @@ function initBookmarkEvents() {
     showToast("Bookmark berhasil disimpan!", "success");
   });
 
-  // Simpan Perubahan Edit Bookmark
   formEditBookmark?.addEventListener("submit", (e) => {
     e.preventDefault();
     if (!editingBookmarkId) return;
@@ -1112,7 +1057,6 @@ function initBookmarkEvents() {
     editingBookmarkId = null;
   });
 
-  // Konfirmasi Hapus Bookmark
   btnConfirmDeleteBookmark?.addEventListener("click", () => {
     if (!deletingBookmarkId) return;
     bookmarks = bookmarks.filter((x) => x.id !== deletingBookmarkId);
@@ -1123,7 +1067,6 @@ function initBookmarkEvents() {
     deletingBookmarkId = null;
   });
 
-  // Search & Filter Listeners
   bookmarkSearchInput?.addEventListener("input", renderBookmarks);
   bookmarkFilterCategory?.addEventListener("change", renderBookmarks);
   bookmarkSortSelect?.addEventListener("change", renderBookmarks);
@@ -1135,9 +1078,6 @@ function initBookmarkEvents() {
 
 const QUIZ_STORAGE_KEY = "ifs24034-p3-quiz-highscore";
 
-/**
- * Array of Object: Daftar Soal Kuis PABWE & JavaScript Modern
- */
 const QUIZ_QUESTIONS = [
   {
     id: 1,
@@ -1245,13 +1185,11 @@ const QUIZ_QUESTIONS = [
   },
 ];
 
-// State Kuis
 let quizCurrentIndex = 0;
 let quizScore = 0;
-let quizUserAnswers = []; // Riwayat jawaban pengguna
-let quizAnswered = false; // Flag apakah soal aktif sudah dijawab
+let quizUserAnswers = [];
+let quizAnswered = false;
 
-// Elemen DOM Kuis
 const quizScreenStart = $("#quiz-screen-start");
 const quizScreenQuestion = $("#quiz-screen-question");
 const quizScreenResult = $("#quiz-screen-result");
@@ -1283,18 +1221,11 @@ const quizRestartBtn = $("#quiz-restart-btn");
 const quizResetRecordBtn = $("#quiz-reset-record-btn");
 const quizReviewList = $("#quiz-review-list");
 
-/**
- * Ambil skor tertinggi dari localStorage
- * @returns {number|null}
- */
 function getQuizHighScore() {
   const v = localStorage.getItem(QUIZ_STORAGE_KEY);
   return v !== null ? Number(v) : null;
 }
 
-/**
- * Tampilkan skor tertinggi pada UI
- */
 function updateQuizHighScoreDisplay() {
   const high = getQuizHighScore();
   if (quizHighScoreEl) {
@@ -1306,9 +1237,6 @@ function updateQuizHighScoreDisplay() {
   }
 }
 
-/**
- * Memulai kuis dari awal
- */
 function startQuiz() {
   quizCurrentIndex = 0;
   quizScore = 0;
@@ -1322,15 +1250,11 @@ function startQuiz() {
   renderCurrentQuestion();
 }
 
-/**
- * Render pertanyaan aktif ke layar
- */
 function renderCurrentQuestion() {
   quizAnswered = false;
   const q = QUIZ_QUESTIONS[quizCurrentIndex];
   if (!q) return;
 
-  // Update counter & progress bar
   const total = QUIZ_QUESTIONS.length;
   const currentNum = quizCurrentIndex + 1;
   const progressPercent = Math.round(((currentNum - 1) / total) * 100);
@@ -1348,17 +1272,15 @@ function renderCurrentQuestion() {
     quizQuestionText.textContent = `${currentNum}. ${q.question}`;
   }
 
-  // Sembunyikan box feedback dan disable tombol next
   if (quizFeedbackBox) quizFeedbackBox.classList.add("hidden");
   if (quizNextBtn) {
     quizNextBtn.disabled = true;
     quizNextBtn.innerHTML =
       currentNum === total
-        ? '<span>Lihat Hasil Akhir</span><i class="ti ti-trophy"></i>'
-        : '<span>Lanjut Soal Berikutnya</span><i class="ti ti-arrow-right"></i>';
+        ? '<span>Lihat Hasil Akhir</span><i class="ti ti-trophy" aria-hidden="true"></i>'
+        : '<span>Lanjut Soal Berikutnya</span><i class="ti ti-arrow-right" aria-hidden="true"></i>';
   }
 
-  // Render opsi jawaban
   if (!quizOptionsContainer) return;
   quizOptionsContainer.innerHTML = "";
 
@@ -1368,20 +1290,22 @@ function renderCurrentQuestion() {
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className =
-      "quiz-option-btn w-full flex items-center gap-3.5 p-4 rounded-xl border border-slate-200 hover:border-sky-300 hover:bg-sky-50/50 text-left transition duration-150 group";
+      "quiz-option-btn w-full flex items-center gap-3.5 p-4 rounded-xl border border-slate-200 hover:border-sky-400 hover:bg-sky-50/50 text-left transition duration-150 group";
     btn.dataset.index = idx;
+    btn.setAttribute("aria-label", `Opsi ${optionLabels[idx] || idx + 1}: ${optText}`);
 
     const labelBadge = document.createElement("span");
     labelBadge.className =
-      "quiz-option-letter w-8 h-8 rounded-lg bg-slate-100 group-hover:bg-sky-600 group-hover:text-white text-slate-700 font-display font-bold text-sm flex items-center justify-center shrink-0 transition";
+      "quiz-option-letter w-8 h-8 rounded-lg bg-slate-100 group-hover:bg-sky-700 group-hover:text-white text-slate-800 font-display font-bold text-sm flex items-center justify-center shrink-0 transition";
     labelBadge.textContent = optionLabels[idx] || `${idx + 1}`;
 
     const textSpan = document.createElement("span");
-    textSpan.className = "flex-1 text-sm font-medium text-slate-800 leading-snug";
+    textSpan.className = "flex-1 text-sm font-medium text-slate-900 leading-snug";
     textSpan.textContent = optText;
 
     const checkIcon = document.createElement("i");
-    checkIcon.className = "quiz-check-icon ti ti-circle text-slate-300 text-lg shrink-0";
+    checkIcon.className = "quiz-check-icon ti ti-circle text-slate-400 text-lg shrink-0";
+    checkIcon.setAttribute("aria-hidden", "true");
 
     btn.append(labelBadge, textSpan, checkIcon);
 
@@ -1390,10 +1314,6 @@ function renderCurrentQuestion() {
   });
 }
 
-/**
- * Handle ketika pengguna memilih salah satu opsi
- * @param {number} selectedIndex 
- */
 function handleSelectOption(selectedIndex) {
   if (quizAnswered) return;
   quizAnswered = true;
@@ -1405,7 +1325,6 @@ function handleSelectOption(selectedIndex) {
     quizScore += 1;
   }
 
-  // Rekam riwayat jawaban
   quizUserAnswers.push({
     questionId: q.id,
     questionText: q.question,
@@ -1417,12 +1336,10 @@ function handleSelectOption(selectedIndex) {
     explanation: q.explanation,
   });
 
-  // Update live score display
   if (quizScoreLive) {
     quizScoreLive.textContent = `Skor Saat Ini: ${quizScore}`;
   }
 
-  // Tampilkan visual pada semua tombol opsi
   const allOptionBtns = $all(".quiz-option-btn");
   allOptionBtns.forEach((btn) => {
     btn.disabled = true;
@@ -1431,36 +1348,32 @@ function handleSelectOption(selectedIndex) {
     const checkIcon = btn.querySelector(".quiz-check-icon");
 
     if (btnIdx === q.answer) {
-      // Opsi Benar
       btn.className =
-        "w-full flex items-center gap-3.5 p-4 rounded-xl border-2 border-emerald-500 bg-emerald-50 text-emerald-900 text-left transition font-semibold";
-      if (letter) letter.className = "w-8 h-8 rounded-lg bg-emerald-600 text-white font-bold text-sm flex items-center justify-center shrink-0";
-      if (checkIcon) checkIcon.className = "ti ti-circle-check-filled text-emerald-600 text-xl shrink-0";
+        "w-full flex items-center gap-3.5 p-4 rounded-xl border-2 border-emerald-600 bg-emerald-50 text-emerald-950 text-left transition font-semibold";
+      if (letter) letter.className = "w-8 h-8 rounded-lg bg-emerald-700 text-white font-bold text-sm flex items-center justify-center shrink-0";
+      if (checkIcon) checkIcon.className = "ti ti-circle-check-filled text-emerald-700 text-xl shrink-0";
     } else if (btnIdx === selectedIndex && !isCorrect) {
-      // Opsi Salah yang dipilih pengguna
       btn.className =
-        "w-full flex items-center gap-3.5 p-4 rounded-xl border-2 border-rose-400 bg-rose-50 text-rose-900 text-left transition font-semibold";
-      if (letter) letter.className = "w-8 h-8 rounded-lg bg-rose-600 text-white font-bold text-sm flex items-center justify-center shrink-0";
-      if (checkIcon) checkIcon.className = "ti ti-circle-x-filled text-rose-600 text-xl shrink-0";
+        "w-full flex items-center gap-3.5 p-4 rounded-xl border-2 border-rose-500 bg-rose-50 text-rose-950 text-left transition font-semibold";
+      if (letter) letter.className = "w-8 h-8 rounded-lg bg-rose-700 text-white font-bold text-sm flex items-center justify-center shrink-0";
+      if (checkIcon) checkIcon.className = "ti ti-circle-x-filled text-rose-700 text-xl shrink-0";
     } else {
-      // Opsi lain yang tidak dipilih
-      btn.className = "w-full flex items-center gap-3.5 p-4 rounded-xl border border-slate-200 bg-slate-50/50 text-slate-400 text-left opacity-60";
+      btn.className = "w-full flex items-center gap-3.5 p-4 rounded-xl border border-slate-200 bg-slate-50/50 text-slate-500 text-left opacity-60";
     }
   });
 
-  // Tampilkan box feedback penjelasan
   if (quizFeedbackBox) {
     quizFeedbackBox.classList.remove("hidden");
     if (isCorrect) {
       quizFeedbackBox.className = "rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm flex items-start gap-3";
-      if (quizFeedbackIcon) quizFeedbackIcon.className = "ti ti-circle-check text-emerald-600 text-xl shrink-0 mt-0.5";
+      if (quizFeedbackIcon) quizFeedbackIcon.className = "ti ti-circle-check text-emerald-700 text-xl shrink-0 mt-0.5";
       if (quizFeedbackTitle) {
         quizFeedbackTitle.className = "font-bold text-emerald-900 mb-1";
         quizFeedbackTitle.textContent = "Jawaban Anda Benar!";
       }
     } else {
       quizFeedbackBox.className = "rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm flex items-start gap-3";
-      if (quizFeedbackIcon) quizFeedbackIcon.className = "ti ti-circle-x text-rose-600 text-xl shrink-0 mt-0.5";
+      if (quizFeedbackIcon) quizFeedbackIcon.className = "ti ti-circle-x text-rose-700 text-xl shrink-0 mt-0.5";
       if (quizFeedbackTitle) {
         quizFeedbackTitle.className = "font-bold text-rose-900 mb-1";
         quizFeedbackTitle.textContent = "Jawaban Anda Kurang Tepat.";
@@ -1472,16 +1385,12 @@ function handleSelectOption(selectedIndex) {
     }
   }
 
-  // Aktifkan tombol Lanjut
   if (quizNextBtn) {
     quizNextBtn.disabled = false;
     quizNextBtn.focus();
   }
 }
 
-/**
- * Pindah ke pertanyaan berikutnya atau tampilkan hasil jika sudah selesai
- */
 function nextQuestion() {
   quizCurrentIndex += 1;
   if (quizCurrentIndex < QUIZ_QUESTIONS.length) {
@@ -1491,9 +1400,6 @@ function nextQuestion() {
   }
 }
 
-/**
- * Tampilkan layar hasil akhir kuis
- */
 function showQuizResult() {
   quizScreenQuestion?.classList.add("hidden");
   quizScreenResult?.classList.remove("hidden");
@@ -1507,7 +1413,6 @@ function showQuizResult() {
   if (quizResultCorrect) quizResultCorrect.textContent = String(quizScore);
   if (quizResultWrong) quizResultWrong.textContent = String(wrongCount);
 
-  // Periksa High Score
   const prevHighScore = getQuizHighScore();
   let isNewRecord = false;
 
@@ -1521,27 +1426,25 @@ function showQuizResult() {
     quizNewRecordTag.classList.toggle("hidden", !isNewRecord);
   }
 
-  // Pesan dan styling hasil berdasarkan skor
   if (quizResultBadgeIcon) {
     if (percentage >= 80) {
-      quizResultBadgeIcon.className = "w-20 h-20 rounded-full mx-auto flex items-center justify-center text-4xl shadow-md bg-emerald-100 text-emerald-600";
-      quizResultBadgeIcon.innerHTML = '<i class="ti ti-trophy"></i>';
+      quizResultBadgeIcon.className = "w-20 h-20 rounded-full mx-auto flex items-center justify-center text-4xl shadow-md bg-emerald-100 text-emerald-700";
+      quizResultBadgeIcon.innerHTML = '<i class="ti ti-trophy" aria-hidden="true"></i>';
       if (quizResultTitle) quizResultTitle.textContent = "Luar Biasa!";
       if (quizResultMessage) quizResultMessage.textContent = "Pemahaman Anda terhadap konsep JavaScript & web modern sangat baik.";
     } else if (percentage >= 50) {
-      quizResultBadgeIcon.className = "w-20 h-20 rounded-full mx-auto flex items-center justify-center text-4xl shadow-md bg-amber-100 text-amber-600";
-      quizResultBadgeIcon.innerHTML = '<i class="ti ti-thumb-up"></i>';
+      quizResultBadgeIcon.className = "w-20 h-20 rounded-full mx-auto flex items-center justify-center text-4xl shadow-md bg-amber-100 text-amber-700";
+      quizResultBadgeIcon.innerHTML = '<i class="ti ti-thumb-up" aria-hidden="true"></i>';
       if (quizResultTitle) quizResultTitle.textContent = "Cukup Bagus!";
       if (quizResultMessage) quizResultMessage.textContent = "Hasil yang baik, namun masih ada beberapa konsep yang perlu diperdalam.";
     } else {
-      quizResultBadgeIcon.className = "w-20 h-20 rounded-full mx-auto flex items-center justify-center text-4xl shadow-md bg-rose-100 text-rose-600";
-      quizResultBadgeIcon.innerHTML = '<i class="ti ti-book"></i>';
+      quizResultBadgeIcon.className = "w-20 h-20 rounded-full mx-auto flex items-center justify-center text-4xl shadow-md bg-rose-100 text-rose-700";
+      quizResultBadgeIcon.innerHTML = '<i class="ti ti-book" aria-hidden="true"></i>';
       if (quizResultTitle) quizResultTitle.textContent = "Perlu Belajar Lagi";
       if (quizResultMessage) quizResultMessage.textContent = "Jangan berkecil hati! Pelajari kembali materi praktikum dan ulangi kuis.";
     }
   }
 
-  // Render Ulasan Soal (Review)
   if (quizReviewList) {
     quizReviewList.innerHTML = "";
     quizUserAnswers.forEach((ans, idx) => {
@@ -1554,20 +1457,20 @@ function showQuizResult() {
         <div class="flex items-start justify-between gap-2 mb-1.5">
           <p class="font-bold text-sm text-slate-900">${idx + 1}. ${escapeHTML(ans.questionText)}</p>
           <span class="inline-flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-md shrink-0 ${
-            ans.isCorrect ? "bg-emerald-100 text-emerald-800" : "bg-rose-100 text-rose-800"
+            ans.isCorrect ? "bg-emerald-100 text-emerald-900" : "bg-rose-100 text-rose-900"
           }">
-            <i class="ti ${ans.isCorrect ? "ti-check" : "ti-x"}"></i> ${ans.isCorrect ? "Benar" : "Salah"}
+            <i class="ti ${ans.isCorrect ? "ti-check" : "ti-x"}" aria-hidden="true"></i> ${ans.isCorrect ? "Benar" : "Salah"}
           </span>
         </div>
         <p class="text-xs text-slate-700">
-          <strong>Jawaban Anda:</strong> <span class="${ans.isCorrect ? "text-emerald-700 font-semibold" : "text-rose-700 font-semibold line-through"}">${escapeHTML(ans.selectedText)}</span>
+          <strong>Jawaban Anda:</strong> <span class="${ans.isCorrect ? "text-emerald-800 font-semibold" : "text-rose-800 font-semibold line-through"}">${escapeHTML(ans.selectedText)}</span>
         </p>
         ${
           !ans.isCorrect
             ? `<p class="text-xs text-emerald-800 mt-0.5 font-medium"><strong>Kunci Jawaban:</strong> ${escapeHTML(ans.correctText)}</p>`
             : ""
         }
-        <p class="text-xs text-slate-500 mt-2 pt-2 border-t border-slate-200/60">${escapeHTML(ans.explanation)}</p>
+        <p class="text-xs text-slate-600 mt-2 pt-2 border-t border-slate-200/60">${escapeHTML(ans.explanation)}</p>
       `;
 
       quizReviewList.appendChild(card);
@@ -1575,7 +1478,6 @@ function showQuizResult() {
   }
 }
 
-// Inisialisasi Event Handlers untuk Kuis
 function initQuizEvents() {
   updateQuizHighScoreDisplay();
 
@@ -1605,21 +1507,11 @@ function initQuizEvents() {
    ==================================================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
-  // 1. Inisialisasi modal listeners
   initModalListeners();
-
-  // 2. Inisialisasi tab switcher
   switchTab(savedTab);
-
-  // 3. Inisialisasi Expense Tracker
   initExpenseEvents();
   renderExpenses();
-
-  // 4. Inisialisasi Bookmark Manager
   initBookmarkEvents();
   renderBookmarks();
-
-  // 5. Inisialisasi Kuis Interaktif
   initQuizEvents();
 });
-

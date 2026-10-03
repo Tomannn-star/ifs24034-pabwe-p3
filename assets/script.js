@@ -3,7 +3,7 @@
  * DelHub Workspace — Praktikum 3 PABWE
  * Pengembang: Toman Sihombing (11S24034 / ifs24034)
  * Fitur:
- *   1. Tab Navigation & State Persistence (localStorage)
+ *   1. Tab Navigation & State Persistence (URL Query Parameter ?tab=...)
  *   2. Catatan Pengeluaran Harian (Expense Tracker - CRUD + Summary + Filter)
  *   3. Bookmark / Link Manager (CRUD + URL Validation + Clipboard Copy)
  *   4. Kuis Interaktif (Quiz App - Array of Objects + High Score + Review)
@@ -183,10 +183,9 @@ function initModalListeners() {
 }
 
 /* ====================================================================
-   3. TAB SWITCHER DENGAN LOCALSTORAGE
+   3. TAB SWITCHER DENGAN QUERY STRING URL (?tab=expense|bookmark|quiz)
    ==================================================================== */
 
-const TAB_STORAGE_KEY = "ifs24034-p3-active-tab";
 const tabButtons = $all(".tab-btn");
 const tabPanels = {
   expense: $("#panel-expense"),
@@ -195,20 +194,34 @@ const tabPanels = {
 };
 
 /**
- * Mengganti tab aktif dan menyimpan pilihan ke localStorage
- * @param {string} tabName 
+ * Mendapatkan nama tab aktif dari Query Parameter URL (?tab=expense|bookmark|quiz)
+ * @returns {string}
  */
-function switchTab(tabName) {
+function getTabFromQuery() {
+  const params = new URLSearchParams(window.location.search);
+  const tab = (params.get("tab") || "").toLowerCase();
+  if (tab === "expense" || tab === "bookmark" || tab === "quiz") {
+    return tab;
+  }
+  return "expense";
+}
+
+/**
+ * Mengganti tab aktif dan memperbarui query URL (?tab=...)
+ * @param {string} tabName 
+ * @param {boolean} updateHistory - true jika ingin memperbarui browser history
+ */
+function switchTab(tabName, updateHistory = true) {
   if (!tabPanels[tabName]) tabName = "expense";
 
-  // Toggle tampilan panel
+  // Toggle tampilan panel (hanya 1 panel aktif)
   Object.entries(tabPanels).forEach(([key, panel]) => {
     if (panel) {
       panel.classList.toggle("hidden", key !== tabName);
     }
   });
 
-  // Update styling tombol tab
+  // Update styling & atribut aria tombol tab
   tabButtons.forEach((btn) => {
     const isActive = btn.dataset.tab === tabName;
     btn.setAttribute("aria-selected", String(isActive));
@@ -222,17 +235,24 @@ function switchTab(tabName) {
     }
   });
 
-  // Simpan status tab ke localStorage
-  localStorage.setItem(TAB_STORAGE_KEY, tabName);
+  // Perbarui status tab ke Query String URL (?tab=...) bukan localStorage
+  if (updateHistory) {
+    const url = new URL(window.location.href);
+    url.searchParams.set("tab", tabName);
+    window.history.pushState({ tab: tabName }, "", url.toString());
+  }
 }
 
-// Event listener untuk tombol tab
+// Event listener untuk tombol navigasi tab
 tabButtons.forEach((btn) => {
-  btn.addEventListener("click", () => switchTab(btn.dataset.tab));
+  btn.addEventListener("click", () => switchTab(btn.dataset.tab, true));
 });
 
-// Pulihkan tab terakhir atau default ke 'expense'
-const savedTab = localStorage.getItem(TAB_STORAGE_KEY) || "expense";
+// Event listener untuk navigasi tombol back/forward browser
+window.addEventListener("popstate", () => {
+  const currentTab = getTabFromQuery();
+  switchTab(currentTab, false);
+});
 
 /* ====================================================================
    4. FITUR 1: CATATAN PENGELUARAN HARIAN (EXPENSE TRACKER)
@@ -1508,7 +1528,8 @@ function initQuizEvents() {
 
 document.addEventListener("DOMContentLoaded", () => {
   initModalListeners();
-  switchTab(savedTab);
+  const initialTab = getTabFromQuery();
+  switchTab(initialTab, false);
   initExpenseEvents();
   renderExpenses();
   initBookmarkEvents();
